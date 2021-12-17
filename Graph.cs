@@ -36,6 +36,7 @@ namespace moveup_graph
 
         public void FindShortestPath(int startNode, int endNode)
         {
+            Console.WriteLine($"Starting FindShortestPath");
             var previous = new Dictionary<int, int>();
             var visited = new List<int>();
             var queue = new Queue<int>();
@@ -45,7 +46,7 @@ namespace moveup_graph
 
             while(queue.Count > 0){
                 var currentNode = queue.Dequeue();
-                Console.WriteLine($"visiting {numbersToLetters[currentNode]}");
+                // Console.WriteLine($"visiting {numbersToLetters[currentNode]}");
 
                 // check if you reached the destination
                 if(currentNode == endNode){
@@ -61,7 +62,7 @@ namespace moveup_graph
                         previous.Add(neighbour, currentNode);
                         if(neighbour != endNode)
                             visited.Add(neighbour);
-                        Console.WriteLine($"enqueing {numbersToLetters[neighbour]} from {numbersToLetters[currentNode]}");
+                        // Console.WriteLine($"enqueing {numbersToLetters[neighbour]} from {numbersToLetters[currentNode]}");
                         queue.Enqueue(neighbour);
                     }
                 }
@@ -76,6 +77,36 @@ namespace moveup_graph
                 cont = previous.TryGetValue(printedStep, out printedStep);
             }
             
+            Console.WriteLine($"-------------------------------");
+        }
+
+        public void FindAllPaths(int startNode, int endNode)
+        {
+            Console.WriteLine($"Starting FindAllPaths");
+            var path = new List<int>();
+
+            checkPath(path, startNode, endNode);
+        }
+
+        private void checkPath(List<int> path, int currentNode, int endNode){
+            path.Add(currentNode);
+
+            if(currentNode == endNode)
+                printPath(path);
+
+            foreach(var neighbour in adjList[currentNode]){
+                if(!path.Contains(neighbour)){
+                    checkPath(new List<int>(path), neighbour, endNode);
+                }
+            }
+        }
+
+        private void printPath(IEnumerable<int> path)
+        {
+            Console.WriteLine($"------ Route: ------");
+            foreach(int node in path){
+                Console.WriteLine($"{numbersToLetters[node]}");
+            }
         }
     }
 }

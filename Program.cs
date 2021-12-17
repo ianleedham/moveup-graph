@@ -25,6 +25,7 @@ namespace moveup_graph
 
 
             graph.FindShortestPath(0, 7);
+            graph.FindAllPaths(0, 7);
         }
     }
 }
